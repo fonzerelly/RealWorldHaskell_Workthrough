@@ -1,0 +1,8 @@
+Teignmouth, England, Babbage
+Paris, France, Cauchy
+Ulm, Germany, Einstein
+Auxerre, France, Fourier
+Brunswick, Germany, Gauss
+Beaumont-en-Auge, France, Laplace
+Ryazaan, Russia, Markov
+

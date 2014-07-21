@@ -1,0 +1,89 @@
+          __                         __
+         /__  _ _|_ _|_ o ._   _    (_ _|_  _. ._ _|_  _   _|
+         \_| (/_ |_  |_ | | | (_|   __) |_ (_| |   |_ (/_ (_|
+                               _|
+        In diesem Kapitel werden grundlegend Funktionen von Haskell beschrieben.
+        An einigen Beispielen werden im ghci (der REPL von Haskell) gezeigt wie sich Operatoren,
+        Zahlen und Funktionen verhalten.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+slide 001

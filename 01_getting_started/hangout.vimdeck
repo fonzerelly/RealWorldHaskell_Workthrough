@@ -1,0 +1,136 @@
+#Getting Started
+In diesem Kapitel werden grundlegend Funktionen von Haskell beschrieben.
+An einigen Beispielen werden im ghci (der REPL von Haskell) gezeigt wie sich Operatoren,
+Zahlen und Funktionen verhalten.
+
+
+##GHC vs Haskellplattform
+GHC ist lediglich ein Compiler, während die Haskellplattform diverse Libraries als auch
+Programme enthält:
+- runghc
+- ghci
+- ...
+
+
+##Precedence-Info
+:info
+Listet den Typ als auch den Precedenz-Level eines Operators auf
+
+Warum gibt es keinen Precedence-Level für Funktionen?
+Ist (+) jetzt eine Funktion oder nicht? Was macht daraus eine Funktion?
+Wird der Operator durch die Klammern zur Funktion 'gecastet'?
+
+Ist ein Operator eine bessere Funktion?
+
+Warum kann man diese Info so dezidiert aus dem System erfragen?
+Was bringt einem diese Information, wenn man in der Praxis doch
+eher mal schnell Klammern setzt?
+
+Was kann alles ein Operator sein?
+
+##Associativity-Info
+Was wird zuerst ausgeführt, links oder rechts Operators
+
+
+##Listenoperationen
+- ++ konkateniert zwei Listen
+- : konstruiert Liste aus Element und Liste
+- .. Enumeriert Wertebereich
+
+.. scheint kein Operator zu sein, warum?
+:info (..) liefert
+:1:2 parse error on input '..'
+
+
+##First Steps Types
+```Haskell
+Prelude> :set +t
+Prelude> 5
+it :: Integer
+Prelude> :unset +t
+Prelude> 5 + 3
+Prelude> :type (it)
+it :: Integer
+Prelude> :type (5 + 3)
+it :: Num a => a
+```
+
+
+##Was haben die
+##Städte gemeinsam
+
+- Teignmouth, England, Babbage
+- Paris, France, Cauchy
+- Ulm, Germany, Einstein
+- Auxerre, France, Fourier
+- Brunswick, Germany, Gauss
+- Beaumont-en-Auge, France, Laplace
+- Ryazaan, Russia, Markov
+
+Aus ihnen stammen die besten Mathematiker der Welt
+
+
+##WC.hs
+
+- interact nimmt Funktion entegegen, die mit InputStream aufgerufen wird
+- wordCount ist der Name der Funktion
+- input ist der parametername des InputStreams
+- show konvertiert Wert zu String
+- length liefert länge einer Liste
+- lines spaltet inputstream in List auf
+- ++ fügt an den output noch weiteren String an
+
+Was genau macht where? Die Funktion definieren? Oder ist das ein Operator,
+der zu interact gehört?
+
+
+##Aufgabe 1
+
+| expression  | :type expression     | :type it |
+|=============|======================|==========|
+| 5 + 8       | Num a => a           | Integer  |
+| 3 * 5 + 8   | Num a => a           | Integer  |
+| 2 + 4       | Num a => a           | Integer  |
+| (+) 2 4     | Num a => a           | Integer  |
+| sqrt 16     | Floating a => a      | Double   |
+| succ 6      | (Enum a, Num a) => a | Integer  |
+| succ 7      | (Enum a, Num a) => a | Integer  |
+| pred 9      | (Enum a, Num a) => a | Integer  |
+| pred 8      | (Enum a, Num a) => a | Integer  |
+| sin (pi /2) | Floating a => a      | Double   |
+| truncate pi | Integral b => b      | Integer  |
+| round 3.5   | Integral b => b      | Integer  |
+| round 3.4   | Integral b => b      | Integer  |
+| floor 3.7   | Integral b => b      | Integer  |
+| ceiling 3.3 | Integral b => b      | Integer  |
+
+
+##Aufgabe 2
+
+```Haskell
+Prelude> let x = 1
+Prelude> :show bindings
+it :: Integer = 4
+x :: Integer = 1
+```
+Man sieht alle Veriablen die im aktuellen
+Namensraum zur Verfügung stehen
+
+
+#Aufgabe 3
+
+```Haskell
+main = interact lineCount
+    where lineCount input = show (length (words input)) ++ "\n"
+
+```
+
+
+#Aufgabe 4
+
+```Haskell
+main = interact lineCount
+    where lineCount input = show (length input) ++ "\n"
+
+```
+
