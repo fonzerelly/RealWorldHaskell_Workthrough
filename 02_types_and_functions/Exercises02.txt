@@ -1,0 +1,11 @@
+last :: [a] -> a
+
+What are the possible behavoirs of last?
+- It can summerize a list to a value of the same type
+- It can extract one of the elements of a list
+- It can ignore the list and return a random value of the same type?!?
+
+What are the things it can not do?
+- It can not covert a list of type a to another type
+- It can not return a modified list
+

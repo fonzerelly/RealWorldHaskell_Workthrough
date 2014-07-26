@@ -1,0 +1,15 @@
+1 What are the types of the following expressions?
+False
+it :: Bool
+correct
+
+(["foo", "bar"], 'a')
+it :: ([[Char]], Char)
+wrong
+
+[(True, []), (False, [['a']])]
+it :: [(Bool, [[Char]])]
+
+lines :: String -> [String]
+Warum evaluieren meine Strings to Char-Listen, während Lines mit einem String-Typ daher kommt?
+Gibt es einen Unterschied zwischen String und [Char]?
