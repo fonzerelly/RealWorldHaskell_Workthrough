@@ -49,6 +49,7 @@ da Funktionen einen höheren Prezedenswert als operatoren haben.
 
 
 ##Listen und Tupel
+##(Polymorphismus)
 
 Listen erwarten keinen konkreten Datentyp
 ```haskell
@@ -73,8 +74,17 @@ zusammenlegen zusammengehöriger Daten. Beispiel:
 ghci> let books = [("Real World Haskell", 2010), ("Structure and Interpreatation of Computer Programs', 1984)]
 ghci> :type books
 books :: [([Char], Integer)]
-
 ```
+
+Parameterized type:
+add :: Num -> Num
+
+Polymorphic type:
+last :: [a] -> a
+
+subtype polymorphism vs parametric polymorphism vs coercion polymorphism
+Ableitung            vs Generics                vs Casting
+
 
 
 ##What are the types of following expressions?
@@ -92,6 +102,7 @@ ghci> :type [(True, []), (False, [['a']])]
 
 
 ##Purity
+##(Seiteneffektfrei)
 - Eine Funktion in Haskell ist hat per default keine Seiteneffekte.
   Das drückt sich auch in ihrem Typus aus.
 - Sollte sie doch in irgend einer Form das Gesamtsystem beeinflussen,
@@ -105,9 +116,19 @@ readFile :: IO String
 ```
 - Wenn eine Variable mal gesetzt ist, kann sie nicht mehr verändert werden.
 
+Konsequenz:
+- Aus der Typensignatur alleine lässt sich abgrenzen welche Auswirkungen sie hat und welche nicht
+- Seiteneffektfreie Funktionen sind in sich schon modular abgegrenzt
+- Die strikte Trennung von Seiteneffektfreiem und -behafteten Code macht die Weiterentwicklung einfacher
+- Risiken die sich durch Abhängigkeiten zur Außenwelt ergeben, werden vermindert
+
 
 ##Lazy evaluation
-Eine Funktion wird erst dann ausgewertet, wenn ihr Wert tatsächlich benötigt wird.
+page 32-36
+Eine Funktion wird zu einem 'thunk' ausgewertet, also einer Funktion der teilweise
+oder vollständig parameter zur Verfügung stehen. Diese Funktion wird aber erst ausgewertet
+wenn ihr Wert tatsächlich benötigt wird.
+(nonstrict evaluation)
 
 Dadurch erklärt sich auch, warum der aus druck 1 + 3 dem Typen einer Funktion entspricht
 und nicht einem Integer
@@ -126,5 +147,37 @@ function() {
 Es handelt sich also lediglich um eine Funktion, die einen Zahlenwert zurückliefern
 wird. Welcher Wert das genau sein wird, steht erst fest wenn die Funktion ausgeführt
 wird.
+
+
+#Based on its type signature, what can last :: [a] -> a do and what not?
+possible:
+- It can summerize a list to a value of the same type
+- It can extract one of the elements of a list
+- It can ignore the list and return a random value of the same type?!?
+
+impossible:
+- It can not covert a list of type a to another type
+- It can not return a modified list
+
+
+#lastButOne
+```haskell
+lastButOne xs = head(drop(length(xs) -2) xs)
+```
+
+```haskell
+ghci> :load lastButOne.hs
+[1 of 1] Compiling Main             ( lastButOne.hs, interpreted )
+Ok, modules loaded: Main.
+ghci> lastButOne [1,2,3,4,5]
+4
+ghci> lastButOne [1,2]
+1
+ghci> lastButOne [1]
+1
+ghci> lastButOne []
+*** Exception: Prelude.head: empty list
+ghci>
+```
 
 
