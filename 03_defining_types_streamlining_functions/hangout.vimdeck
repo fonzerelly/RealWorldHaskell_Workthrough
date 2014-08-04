@@ -1,0 +1,242 @@
+#Defining Types,
+#Streamlining Functions
+##Part I
+
+
+##MyType
+```haskell
+data MyType = MyConstructor Int String
+              deriving(Show)
+```
+
+Mit dem Schlüsselwort 'data' wird ein neuer Typ definiert
+
+Ihm wird eine Constructor-Funktion übergeben
+
+Dieser Konstruktor erwartet alle Parameter des Typs in der 'richtigen Reihenfolge'
+
+deriving wurde noch nicht erklärt, aber es wird wohl sowas ähnliches bedeuten wie von mehreren Interfaces erben
+
+```haskell
+ghci>MyConstructor 1 "me"
+
+ghci>:type it
+it :: MyType
+```
+
+
+##TypeSynonyms
+```haskell
+type MySynonym = int
+```
+Erlaubt die bessere Lesbarkeit von Code
+
+
+##Algebraic Types
+```haskell
+data MyType = MyFirstConstructor | MySecondConstructor
+```
+Algebraic Types erlauben es unterschiedliche Konstruktoren
+Algebraic Types erlauben es unterschiedliche Konstruktoren
+für einen Typen zu definieren. Im Gegensatz zur Konstruktor-Überladung
+von klassischen Sprachen her, können die einzelnen Konstruktoren
+später noch unterschieden werden.
+
+Mit Algebraic Types lassen sich außerdem Enums leicht erstellen
+
+
+##PatternMatching
+Um aus einem Vordefinierten Datentyp oder Tupel einzelne Werte zu extrahieren
+kann mit einer entsprechenden Funktionsdefinition der Typus 'dekonstruiert' werden:
+```haskell
+MyConstructor -> integer
+getID (MyConstructor id _) = id
+
+MyConstructor -> String
+getName (MyConstructor _ name) = name
+```
+Da das Wunschdatum von seiner Position im Datentyp abhängt, müssen die Variablen
+entsprechend der Reihenfolge im Constructor definiert werden. Sollten bestimmten
+Variablen nicht interessieren, kann der Platzhalter _ auch mehrfach benutzt werden,
+um Variablen zu ignorieren.
+
+Mit dem : lassen sich Listen im Funktionsaufruf dekonstruieren:
+```haskell
+mySum [] = 0
+mySum (x:xs) = x + mySum xs
+```
+
+
+##Record Syntax
+Die Record Syntax ist eine convienience-Schreibweise, mit der neben der
+Typen-Deklaration auch automatisch die Getter der einzelnen Typ-Komponenten erstellt werden
+können:
+```haskell
+data MyType = MyType {
+	id :: Integer
+        name :: String
+} deriving (Show)
+
+ghci>name (MyType 1 "herbert")
+it = herbert
+```
+
+
+##Parametrized Types
+Parametrisierte Typen legen ihre Parameter nicht auf einen Basistypen fest sondern können
+ähnlich wie Listen und Tupel unterschiedliche Datentypen aufnehmen.
+
+
+##Was will uns der
+##Compiler damit sagen? I
+```haskell
+ghci> :load mySum.hs
+[1 of 1] Compiling Main             ( mySum.hs, interpreted )
+
+mySum.hs:13:20:
+    Could not deduce (a ~ ([Integer] -> Integer))
+    from the context (Num a)
+      bound by the type signature for mySum :: Num a => [a] -> a
+      at mySum.hs:11:10-26
+      `a' is a rigid type variable bound by
+          the type signature for mySum :: Num a => [a] -> a
+          at myLength.hs:11:10
+    In the second argument of `(+)', namely `mySum'
+    In the expression: n + mySum
+    In an equation for `mySum': mySum (n : ns) = n + mySum
+Failed, modules loaded: none.
+ghci>
+```
+
+
+##Was will uns der
+##Compiler damit sagen? I
+```haskell
+mySum :: Num a => [a] -> a
+mySum [] = 0
+mySum (n:ns) = n + mySum
+```
+mySum wird rekursiv ohne Parameter aufgerufen
+mySum wird rekursiv ohne Parameter aufgerufen
+
+
+##Was will uns der
+##Compiler damit sagen? II
+```haskell
+ghci> :load myMean.hs
+[1 of 1] Compiling Main             ( myMean.hs, interpreted )
+
+myMean.hs:19:13:
+    Could not deduce (Integral a) arising from a use of `fromIntegral'
+    from the context (Num a)
+      bound by the type signature for myMean :: Num a => [a] -> Double
+      at myMean.hs:18:11-32
+    Possible fix:
+      add (Integral a) to the context of
+        the type signature for myMean :: Num a => [a] -> Double
+    In the first argument of `(/)', namely `fromIntegral (sum (ns))'
+    In the expression:
+      fromIntegral (sum (ns)) / fromIntegral (length (ns))
+    In an equation for `myMean':
+        myMean ns = fromIntegral (sum (ns)) / fromIntegral (length (ns))
+Failed, modules loaded: none.
+ghci>
+```
+
+
+##Was will uns der
+##Compiler damit sagen? II
+```haskell
+myMean :: Num a => [a] -> Double
+myMean ns = fromIntegral(sum(ns))/fromIntegral(length(ns))
+```
+
+Der Compiler erwartet eine andere Typensignatur:
+Der Compiler erwartet eine andere Typensignatur:
+```haskell
+myMean :: (Fractional a, Integral a1) => [a1] -> a
+```
+Warum? Was Stimmt an meiner Signatur nicht? Mit der Signatur des Compilers
+erhalte ich nicht dass was ich will, nämlich einen Durchschnitt einer Liste
+unabhängig von ihrem Typ, so lange ihr Typ von Num abgeleitet ist.
+
+
+##Was will uns der
+##Compiler damit sagen? III
+```haskell
+ghci> :load myReverse.hs
+[1 of 1] Compiling Main             ( myReverse.hs, interpreted )
+Ok, modules loaded: Main.
+ghci> myReverse "doof"
+
+<interactive>:13:11:
+    Couldn't match type `Char' with `[a0]'
+    Expected type: [[a0]]
+      Actual type: [Char]
+    In the first argument of `myReverse', namely `"doof"'
+    In the expression: myReverse "doof"
+    In an equation for `it': it = myReverse "doof"
+ghci>
+```
+
+
+##Was will uns der
+##Compiler damit sagen? III
+```haskell
+myReverse [] = []
+myReverse (x:xs) = myReverse(xs) ++ x
+```
+Hier wurde übersehen, dass der ++-Operator als zweiten Parameter
+Hier wurde übersehen, dass der ++-Operator als zweiten Parameter
+eine Liste und keinen einzelnen Wert erwartet.
+
+
+##Was will uns der
+##Compiler damit sagen? IV
+```haskell
+ghci> :load takeHalf.hs
+[1 of 1] Compiling Main             ( takeHalf.hs, interpreted )
+
+takeHalf.hs:7:24:
+    Couldn't match expected type `a1 -> Int' with actual type `Int'
+    The function `length' is applied to two arguments,
+    but its type `[a0] -> Int' has only one
+    In the first argument of `div', namely `(length (xs) 2)'
+    In the first argument of `take', namely `(div (length (xs) 2) xs)'
+
+takeHalf.hs:7:38:
+    Couldn't match expected type `Int' with actual type `[a0]'
+    In the second argument of `div', namely `xs'
+    In the first argument of `take', namely `(div (length (xs) 2) xs)'
+    In the expression: take (div (length (xs) 2) xs)
+Failed, modules loaded: none.
+ghci>
+```
+
+
+##Was will uns der
+##Compiler damit sagen? IV
+Das ist falsch
+```haskell
+takeHalf xs = take(div(length(xs) 2) xs)
+```
+
+Das ist richtig:
+```haskell
+takeHalf xs = (take (div (length xs) 2) xs)
+```
+
+
+##Und warum ist das so?
+```haskell
+Prelude> let value = length [1,2,3]
+Prelude> :type value
+value :: Int
+Prelude> let notNum = fromIntegral value
+Prelude> :type notNum
+notNum :: Integer
+Prelude>
+```
+
+
+#Thank you
