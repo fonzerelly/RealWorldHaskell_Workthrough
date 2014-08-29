@@ -24,3 +24,18 @@ main = hspec $ do
 
     it "return Nothing if list is empty" $ do
       safeTail ([]::[Int]) `shouldBe` Nothing
+
+   describe "safeLast" $ do
+    it "returns the last element of a given list" $ do
+      safeLast [1,2,3] `shouldBe` Just 3
+
+    it "returns Nothing if list is empty" $ do
+      safeLast ([]::[Int]) `shouldBe` Nothing
+
+   describe "saveInit" $ do
+    it "returns all but the last element of a given list" $do
+      safeInit [1,2,3] `shouldBe` Just [1,2]
+
+    it "returns Nothing if list is empty" $ do
+      safeInit ([]::[Int]) `shouldBe` Nothing
+
