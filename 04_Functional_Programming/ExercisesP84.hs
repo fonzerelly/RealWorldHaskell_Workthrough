@@ -15,11 +15,31 @@ safeLast (x:xs) = safeLast xs
 safeInit :: [a] -> Maybe [a]
 safeInit []     = Nothing
 safeInit (x:[]) = Just []
-safeInit (x:xs) = Just ([x]++(fromMaybe [] (safeInit xs)))
+safeInit (x:xs) = Just ([x]++(unwrap (safeInit xs)))
    where
-      fromMaybe defval wrapped =
-         case wrapped of
-            Nothing -> defval
-            Just value -> value
+      unwrap :: Maybe [a] -> [a]
+      unwrap Nothing = []
+      unwrap (Just xs) = xs
 
+-- run this version with -XScopedTypeVariables
+-- splitWith :: forall a. (a -> Bool) -> [a] -> [[a]]
+-- splitWith p (xs) = pre xs : [(post xs)]
+--    where
+--       pre :: [a] -> [a]
+--       pre (x:xs)
+--          | p x       = [x]++(pre xs)
+--          | otherwise = []
+--       post :: [a] -> [a]
+--       post (x:xs)
+--          | p x       = post xs
+--         | otherwise = xs
 
+splitWith :: (a -> Bool) -> [a] -> [[a]]
+splitWith p (xs) = pre xs : [(post xs)]
+   where
+      pre (x:xs)
+         | p x       = [x]++(pre xs)
+         | otherwise = []
+      post (x:xs)
+         | p x       = post xs
+        | otherwise = xs

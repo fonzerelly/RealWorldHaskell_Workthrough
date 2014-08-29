@@ -6,7 +6,8 @@ import ExercisesP84
 
 main :: IO ()
 main = hspec $ do
-  describe "1. Write your own 'safe' definitions of the standard partial  list functions, but make sure they never fail." $ do
+  describe "1. Write your own 'safe' definitions of the standard partial \
+  \ list functions, but make sure they never fail." $ do
 
    describe "safeHead" $ do
     it "returns the first value of a given list" $ do
@@ -38,4 +39,10 @@ main = hspec $ do
 
     it "returns Nothing if list is empty" $ do
       safeInit ([]::[Int]) `shouldBe` Nothing
+
+  describe "2. Write a function 'splitWith' that acts similarly to 'words' \
+  \ but takes a predicate and a list of any type, and then splits its input \
+  \ list on every element for which the predicate returns False" $ do
+   it "should split the list of Int with odd-predicate on even values" $do
+      splitWith odd [1,2,3] `shouldBe` [[1],[3]]
 
