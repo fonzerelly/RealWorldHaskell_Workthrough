@@ -6,43 +6,49 @@ import ExercisesP84
 
 main :: IO ()
 main = hspec $ do
-  describe "1. Write your own 'safe' definitions of the standard partial \
-  \ list functions, but make sure they never fail." $ do
 
-   describe "safeHead" $ do
-    it "returns the first value of a given list" $ do
-      safeHead [1,2,3] `shouldBe` Just 1
+   describe "1. Write your own 'safe' definitions of the standard partial \
+   \ list functions, but make sure they never fail." $ do
 
-    it "returns Nothing if empty list is given" $ do
-      safeHead ([]::[Int]) `shouldBe` Nothing
+      describe "safeHead" $ do
+         it "returns the first value of a given list" $ do
+            safeHead [1,2,3] `shouldBe` Just 1
 
-   describe "safeTail" $ do
-    it "returns all but the first value of a given list" $ do
-      safeTail [1,2,3] `shouldBe` Just [2,3]
+         it "returns Nothing if empty list is given" $ do
+            safeHead ([]::[Int]) `shouldBe` Nothing
 
-    it "returns an empty List, if list contains single item" $do
-      safeTail [1] `shouldBe` Just []
+      describe "safeTail" $ do
+         it "returns all but the first value of a given list" $ do
+            safeTail [1,2,3] `shouldBe` Just [2,3]
 
-    it "return Nothing if list is empty" $ do
-      safeTail ([]::[Int]) `shouldBe` Nothing
+         it "returns an empty List, if list contains single item" $do
+            safeTail [1] `shouldBe` Just []
 
-   describe "safeLast" $ do
-    it "returns the last element of a given list" $ do
-      safeLast [1,2,3] `shouldBe` Just 3
+         it "return Nothing if list is empty" $ do
+            safeTail ([]::[Int]) `shouldBe` Nothing
 
-    it "returns Nothing if list is empty" $ do
-      safeLast ([]::[Int]) `shouldBe` Nothing
+      describe "safeLast" $ do
+         it "returns the last element of a given list" $ do
+            safeLast [1,2,3] `shouldBe` Just 3
 
-   describe "saveInit" $ do
-    it "returns all but the last element of a given list" $do
-      safeInit [1,2,3] `shouldBe` Just [1,2]
+         it "returns Nothing if list is empty" $ do
+            safeLast ([]::[Int]) `shouldBe` Nothing
 
-    it "returns Nothing if list is empty" $ do
-      safeInit ([]::[Int]) `shouldBe` Nothing
+      describe "saveInit" $ do
+         it "returns all but the last element of a given list" $do
+            safeInit [1,2,3] `shouldBe` Just [1,2]
 
-  describe "2. Write a function 'splitWith' that acts similarly to 'words' \
-  \ but takes a predicate and a list of any type, and then splits its input \
-  \ list on every element for which the predicate returns False" $ do
-   it "should split the list of Int with odd-predicate on even values" $do
-      splitWith odd [1,2,3] `shouldBe` [[1],[3]]
+         it "returns Nothing if list is empty" $ do
+            safeInit ([]::[Int]) `shouldBe` Nothing
+
+   describe "2. Write a function 'splitWith' that acts similarly to 'words' \
+   \ but takes a predicate and a list of any type, and then splits its input \
+   \ list on every element for which the predicate returns False" $ do
+
+      it "should split the list of Int with odd-predicate on even values" $ do
+         splitWith odd [1,2,3] `shouldBe` [[1],[3]]
+         splitWith odd [1,1,2,3,4,5,5] `shouldBe` [[1,1],[3],[5,5]]
+
+      it "should return  empty list if empty list is passed" $ do
+         splitWith odd [] `shouldBe` []
 

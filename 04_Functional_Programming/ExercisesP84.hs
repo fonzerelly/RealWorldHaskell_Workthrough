@@ -35,11 +35,14 @@ safeInit (x:xs) = Just ([x]++(unwrap (safeInit xs)))
 --         | otherwise = xs
 
 splitWith :: (a -> Bool) -> [a] -> [[a]]
-splitWith p (xs) = pre xs : [(post xs)]
+splitWith _ [] = []
+splitWith p (ns) = pre ns : (post ns)
    where
       pre (x:xs)
          | p x       = [x]++(pre xs)
          | otherwise = []
+      pre []         = []
       post (x:xs)
          | p x       = post xs
-        | otherwise = xs
+         | otherwise = splitWith p xs
+      post []        = []
