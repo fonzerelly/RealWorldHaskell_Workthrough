@@ -16,23 +16,10 @@ safeInit :: [a] -> Maybe [a]
 safeInit []     = Nothing
 safeInit (x:[]) = Just []
 safeInit (x:xs) = Just ([x]++(unwrap (safeInit xs)))
-   where
-      unwrap :: Maybe [a] -> [a]
-      unwrap Nothing = []
-      unwrap (Just xs) = xs
 
--- run this version with -XScopedTypeVariables
--- splitWith :: forall a. (a -> Bool) -> [a] -> [[a]]
--- splitWith p (xs) = pre xs : [(post xs)]
---    where
---       pre :: [a] -> [a]
---       pre (x:xs)
---          | p x       = [x]++(pre xs)
---          | otherwise = []
---       post :: [a] -> [a]
---       post (x:xs)
---          | p x       = post xs
---         | otherwise = xs
+unwrap :: Maybe [a] -> [a]
+unwrap Nothing = []
+unwrap (Just xs) = xs
 
 splitWith :: (a -> Bool) -> [a] -> [[a]]
 splitWith _ [] = []
@@ -46,3 +33,6 @@ splitWith p (ns) = pre ns : (post ns)
          | p x       = post xs
          | otherwise = splitWith p xs
       post []        = []
+
+firstWords :: String -> String
+firstWords cs = unlines (map unwrap (map safeHead (map words (lines cs))))

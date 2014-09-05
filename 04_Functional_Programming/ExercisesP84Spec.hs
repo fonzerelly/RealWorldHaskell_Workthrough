@@ -52,3 +52,12 @@ main = hspec $ do
       it "should return  empty list if empty list is passed" $ do
          splitWith odd [] `shouldBe` []
 
+   describe "3. Using the command framework from the earlier seciton 'A Simple \
+   \ Command-Line Framework' on page 71, write aprogram that prints the first word \
+   \ of each line of its input." $ do
+
+      it "should return a list with every first word of newline separated text" $ do
+         firstWords "one two three\none two three" `shouldBe` "one\none\n"
+
+      it "should return repeat empty lines" $ do
+         firstWords "one two three\n\none two three" `shouldBe` "one\n\none\n"
