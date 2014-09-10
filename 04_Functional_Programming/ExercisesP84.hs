@@ -36,3 +36,18 @@ splitWith p (ns) = pre ns : (post ns)
 
 firstWords :: String -> String
 firstWords cs = unlines (map unwrap (map safeHead (map words (lines cs))))
+
+firstChars :: [String] -> String
+firstChars [] = ""
+firstChars (s:ss)
+   | s == ""   = ' ' : firstChars ss
+   | otherwise = head(s) : firstChars ss
+
+transposeStrings :: [String] -> [String]
+transposeStrings ss
+   | all (=="") ss = []
+   | otherwise     = firstChars ss : transposeStrings (map unwrap (map safeTail ss))
+
+transposeLines :: String -> String
+transposeLines s = unlines (transposeStrings (lines s))
+

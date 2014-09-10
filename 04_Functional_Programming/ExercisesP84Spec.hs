@@ -61,3 +61,27 @@ main = hspec $ do
 
       it "should return repeat empty lines" $ do
          firstWords "one two three\n\none two three" `shouldBe` "one\n\none\n"
+
+   describe "4. Write a program that transposes the text in a file" $ do
+
+      describe "firstChars" $ do
+         it "should extract each first Char of a list of Strings into one new String" $ do
+            firstChars ["Hello", "World"] `shouldBe` "HW"
+            firstChars ["Hello", "World", "around"] `shouldBe` "HWa"
+
+         it "should append a whitespace in case of an empty string" $ do
+            firstChars ["Hello", "World", ""] `shouldBe`"HW "
+            firstChars ["Hello", "", "around"] `shouldBe`"H a"
+
+      describe "transposeSrings" $ do
+         context "when strins are equally long" $ do
+            it "should combine each char of each string to a new Stringlist" $ do
+               transposeStrings ["Hello", "World"] `shouldBe` ["HW", "eo", "lr", "ll", "od"]
+
+         context "when strins are not equally long" $ do
+            it "should fill up shorter strings with whitespaces" $ do
+            transposeStrings ["Hey", "guys"] `shouldBe` ["Hg", "eu", "yy", " s"]
+
+      describe "transposeLines" $ do
+         it "should mix the letters of each line with each other" $ do
+            transposeLines "hello\nworld\n" `shouldBe` "hw\neo\nlr\nll\nod\n"
