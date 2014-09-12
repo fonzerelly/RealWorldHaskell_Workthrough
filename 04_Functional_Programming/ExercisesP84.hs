@@ -1,4 +1,8 @@
 module ExercisesP84 where
+
+import Data.Maybe (fromMaybe, listToMaybe)
+import Safe (tailMay, tailSafe)
+
 safeHead :: [a] -> Maybe a
 safeHead (x:xs) = Just(x)
 safeHead [] = Nothing
@@ -37,17 +41,17 @@ splitWith p (ns) = pre ns : (post ns)
 firstWords :: String -> String
 firstWords cs = unlines (map unwrap (map safeHead (map words (lines cs))))
 
-firstChars :: [String] -> String
-firstChars [] = ""
-firstChars (s:ss)
-   | s == ""   = ' ' : firstChars ss
-   | otherwise = head(s) : firstChars ss
+firstChars :: [String] -> [Maybe Char]
+firstChars = foldr appendMaybeHead []
+    where appendMaybeHead s a = (listToMaybe s) : a
+
+firstCharsOrElse :: Char -> [String] -> String
+firstCharsOrElse r = map (fromMaybe r) . firstChars
 
 transposeStrings :: [String] -> [String]
 transposeStrings ss
    | all (=="") ss = []
-   | otherwise     = firstChars ss : transposeStrings (map unwrap (map safeTail ss))
+   | otherwise     = firstCharsOrElse ' ' ss : transposeStrings (map tailSafe ss)
 
 transposeLines :: String -> String
-transposeLines s = unlines (transposeStrings (lines s))
-
+transposeLines = unlines . transposeStrings . lines
