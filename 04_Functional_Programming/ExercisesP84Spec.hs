@@ -73,7 +73,7 @@ main = hspec $ do
             firstChars ["Hello", "World", ""] `shouldBe`"HW "
             firstChars ["Hello", "", "around"] `shouldBe`"H a"
 
-      describe "transposeSrings" $ do
+      describe "transposeStrings" $ do
          context "when strins are equally long" $ do
             it "should combine each char of each string to a new Stringlist" $ do
                transposeStrings ["Hello", "World"] `shouldBe` ["HW", "eo", "lr", "ll", "od"]
