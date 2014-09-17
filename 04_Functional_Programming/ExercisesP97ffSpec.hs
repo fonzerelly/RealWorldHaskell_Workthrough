@@ -3,6 +3,7 @@ module ExercisesP97ffSpec where
 
 import Test.Hspec
 import ExercisesP97ff
+import Control.Exception.Base
 
 main :: IO ()
 main = hspec $ do
@@ -23,6 +24,12 @@ main = hspec $ do
 
          it "should negate the result if char is a dash" $ do
             decimalDigitToInt '-' (3, 10) `shouldBe` (-3, 10)
+
+         it "should except on points" $ do
+            evaluate (decimalDigitToInt '.' (0, 1)) `shouldThrow` errorCall "Float is no int!"
+
+         it "should except on overflowing max Int" $ do
+            evaluate (decimalDigitToInt '1' (maxBound::Int, 1)) `shouldThrow` errorCall "Too big for Int!"
 	
 
    describe "2. Your function should behave as follows" $ do
@@ -32,3 +39,16 @@ main = hspec $ do
          asInt_fold "-31337" `shouldBe` -31337
       it "should convert the string '1798' to int 1798" $ do
          asInt_fold "1798" `shouldBe` 1798
+
+   describe "3. Extend your function to handle the following kinds of exceptional \
+   \ conditions by calling error" $ do
+      it "should except on empty string" $ do
+         evaluate (asInt_fold "") `shouldThrow` errorCall "Empty String is not allowed!"
+      it "should except on minus only" $ do
+         evaluate (asInt_fold "-") `shouldThrow` errorCall "Minus only is no int!"
+      it "should exept on -3" $ do
+         evaluate (asInt_fold "-3") `shouldThrow` errorCall "What ever the boss says."
+      it "should except on floats" $ do
+         evaluate (asInt_fold "2.7") `shouldThrow` errorCall "Float is no int!"
+      it "should except on too long integers" $ do
+         evaluate (asInt_fold "314159265358979323846") `shouldThrow` errorCall "Too big for Int!"
