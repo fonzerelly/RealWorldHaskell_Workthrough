@@ -14,7 +14,7 @@ main = hspec $ do
 	--it "should match the type" $ do`
 	--  asInt_fold  `shouldBe` asInt_fold :: String -> Int
 	--
-      describe "basedDigitToInt" $ do
+      describe "decimalDigitToInt" $ do
          it "should convert digits and multiplies them by the base provided" $ do
             decimalDigitToInt '5' (0, 1) `shouldBe` (5, 10)
             decimalDigitToInt '8' (0, 10) `shouldBe` (80, 100)
@@ -52,3 +52,15 @@ main = hspec $ do
          evaluate (asInt_fold "2.7") `shouldThrow` errorCall "Float is no int!"
       it "should except on too long integers" $ do
          evaluate (asInt_fold "314159265358979323846") `shouldThrow` errorCall "Too big for Int!"
+
+   describe "4. The asInt_fold function uses 'error', so its callers can not handle errors. \
+   \ Rewrite the function to fix this problem." $ do
+      describe "decimalDigitToInt_either" $ do
+         it "should return either a Number" $ do
+            decimalDigitToInt_either '4' (Right 2, 10) `shouldBe` (Right 42, 100)
+         it "should return the error message for an error" $ do
+            decimalDigitToInt_either '4' (Left "Error", 10) `shouldBe` (Left "Error", 10)
+      it "should return Right Num for an integer"  $ do
+         asInt_either "33" `shouldBe` Right 33
+      it "should return Left ErrorMessage for foo" $ do
+         asInt_either "foo" `shouldBe` Left "non-digit o"
