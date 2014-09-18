@@ -65,20 +65,25 @@ main = hspec $ do
    describe "4. Write a program that transposes the text in a file" $ do
 
       describe "firstChars" $ do
+         it "should extract each first Char of a list of Strings into a list of Maybes" $ do
+            firstChars ["Hello", "World"] `shouldBe` [Just 'H', Just 'W']
+            firstChars ["Hello", "", "World"] `shouldBe` [Just 'H', Nothing, Just 'W']
+
+      describe "firstCharsOrElse" $ do
          it "should extract each first Char of a list of Strings into one new String" $ do
-            firstChars ["Hello", "World"] `shouldBe` "HW"
-            firstChars ["Hello", "World", "around"] `shouldBe` "HWa"
+            firstCharsOrElse ' ' ["Hello", "World"] `shouldBe` "HW"
+            firstCharsOrElse ' ' ["Hello", "World", "around"] `shouldBe` "HWa"
 
          it "should append a whitespace in case of an empty string" $ do
-            firstChars ["Hello", "World", ""] `shouldBe`"HW "
-            firstChars ["Hello", "", "around"] `shouldBe`"H a"
+            firstCharsOrElse ' ' ["Hello", "World", ""] `shouldBe`"HW "
+            firstCharsOrElse ' ' ["Hello", "", "around"] `shouldBe`"H a"
 
       describe "transposeStrings" $ do
          context "when strins are equally long" $ do
             it "should combine each char of each string to a new Stringlist" $ do
                transposeStrings ["Hello", "World"] `shouldBe` ["HW", "eo", "lr", "ll", "od"]
 
-         context "when strins are not equally long" $ do
+         context "when strings are not equally long" $ do
             it "should fill up shorter strings with whitespaces" $ do
             transposeStrings ["Hey", "guys"] `shouldBe` ["Hg", "eu", "yy", " s"]
 
