@@ -1,5 +1,5 @@
 module ExercisesP97ff where
- 
+
 import Data.Char(digitToInt)
 
 decimalDigitToInt :: Char -> (Int, Int) -> (Int, Int)
@@ -18,9 +18,12 @@ asInt_fold cs = fst (foldr decimalDigitToInt (0, 1) cs)
 type ErrorMessage = String
 decimalDigitToInt_either :: Char -> (Either ErrorMessage Int, Int) -> (Either ErrorMessage Int, Int)
 decimalDigitToInt_either c (Left error, base) = (Left error, base)
-decimalDigitToInt_either c (Right result, base) 
+decimalDigitToInt_either c (Right result, base)
    | elem c ['0'..'f'] = (Right (digitToInt c * base + result), base *10)
    | otherwise = (Left ("non-digit " ++ [c]), base)
 
 asInt_either :: String -> Either ErrorMessage Int
 asInt_either cs = fst (foldr decimalDigitToInt_either (Right 0, 1) cs)
+
+myconcat :: [[a]] -> [a]
+myconcat xss = foldr (++) [] xss

@@ -11,14 +11,12 @@ main = hspec $ do
    describe "1. Use a fold(choosing the appropriate fold will make your code \
    \ much simpler) to rewrite and improve upon 'asInt' function from the earlier \
    \ section 'Explicid Recursion' on page 85." $ do
-	--it "should match the type" $ do`
-	--  asInt_fold  `shouldBe` asInt_fold :: String -> Int
-	--
+
       describe "decimalDigitToInt" $ do
          it "should convert digits and multiplies them by the base provided" $ do
             decimalDigitToInt '5' (0, 1) `shouldBe` (5, 10)
             decimalDigitToInt '8' (0, 10) `shouldBe` (80, 100)
-	
+
 	 it "should add the result to the function found integer" $ do
             decimalDigitToInt '4' (2,10) `shouldBe` (42, 100)
 
@@ -30,7 +28,7 @@ main = hspec $ do
 
          it "should except on overflowing max Int" $ do
             evaluate (decimalDigitToInt '1' (maxBound::Int, 1)) `shouldThrow` errorCall "Too big for Int!"
-	
+
 
    describe "2. Your function should behave as follows" $ do
       it "should convert the string '101' to int 101" $ do
@@ -64,3 +62,11 @@ main = hspec $ do
          asInt_either "33" `shouldBe` Right 33
       it "should return Left ErrorMessage for foo" $ do
          asInt_either "foo" `shouldBe` Left "non-digit o"
+
+   describe "5. The `Prelude` function concat concatenates  a list of lists \
+   \ into a single list and has the following type" $ do
+      describe "6. Write your own definition of concat using foldr." $ do
+         it "should concat the several arrays in an array to one array" $ do
+            myconcat [[1,2],[3],[4,5]] `shouldBe` [1,2,3,4,5]
+         it "should handle empty arrays" $ do
+            myconcat [[1,2],[],[4,5]] `shouldBe` [1,2,4,5]
