@@ -70,3 +70,14 @@ main = hspec $ do
             myconcat [[1,2],[3],[4,5]] `shouldBe` [1,2,3,4,5]
          it "should handle empty arrays" $ do
             myconcat [[1,2],[],[4,5]] `shouldBe` [1,2,4,5]
+
+   describe "7. Write your own definition of the standard takeWhile function," $ do
+      context "first using explicit recursion," $ do
+         it "should return a list as long as a predicates verifies" $ do
+            takeWhile_recursive odd [1,3,4,5] `shouldBe` [1,3]
+            takeWhile_recursive odd [1,3,5] `shouldBe` [1,3,5]
+      context "and then foldr." $ do
+         it "should return a list as long as a predicates verifies" $ do
+            takeWhile_foldr odd [1,3,4,5] `shouldBe` [1,3]
+            takeWhile_foldr odd [1,3,5] `shouldBe` [1,3,5]
+            takeWhile_foldr odd [] `shouldBe` []

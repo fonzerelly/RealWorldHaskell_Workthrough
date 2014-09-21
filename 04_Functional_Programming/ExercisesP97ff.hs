@@ -27,3 +27,16 @@ asInt_either cs = fst (foldr decimalDigitToInt_either (Right 0, 1) cs)
 
 myconcat :: [[a]] -> [a]
 myconcat xss = foldr (++) [] xss
+
+takeWhile_recursive :: (a -> Bool) -> [a] -> [a]
+takeWhile_recursive _ [] = []
+takeWhile_recursive f (x:xs)
+   | f x       = x : takeWhile_recursive f xs
+   | otherwise = []
+
+takeWhile_foldr :: (a -> Bool) -> [a] -> [a]
+takeWhile_foldr f xs = foldr takeWhile_iter [] xs
+   where
+      takeWhile_iter x acc
+         | f x       = [x] ++ acc
+         | otherwise = []
