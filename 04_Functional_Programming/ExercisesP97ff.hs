@@ -1,6 +1,7 @@
 module ExercisesP97ff where
 
 import Data.Char(digitToInt)
+import Data.List
 
 decimalDigitToInt :: Char -> (Int, Int) -> (Int, Int)
 decimalDigitToInt '-' (result, base) = (- result, base)
@@ -40,3 +41,16 @@ takeWhile_foldr f xs = foldr takeWhile_iter [] xs
       takeWhile_iter x acc
          | f x       = [x] ++ acc
          | otherwise = []
+
+composeComparables :: [a] -> [(a,a)]
+composeComparables xs = (zip xs (tail xs)) ++ [(eol, eol)]
+   where eol = last xs
+
+groupBy_fold_iter :: (a -> a -> Bool) -> ([[a]], [a]) -> (a,a) -> ([[a]], [a])
+groupBy_fold_iter p acc t_x
+   | p (fst t_x) (snd t_x) = (fst(acc), snd(acc) ++ [fst(t_x)])
+   | otherwise             = (fst(acc) ++ [snd(acc) ++ [fst(t_x)]], [])
+
+groupBy_fold :: (a -> a -> Bool) -> [a] -> [[a]]
+groupBy_fold p xs = fst (foldl' (groupBy_fold_iter p) ([],[]) (composeComparables xs))
+

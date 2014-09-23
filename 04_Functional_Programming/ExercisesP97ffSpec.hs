@@ -4,6 +4,7 @@ module ExercisesP97ffSpec where
 import Test.Hspec
 import ExercisesP97ff
 import Control.Exception.Base
+import Data.List
 
 main :: IO ()
 main = hspec $ do
@@ -81,3 +82,29 @@ main = hspec $ do
             takeWhile_foldr odd [1,3,4,5] `shouldBe` [1,3]
             takeWhile_foldr odd [1,3,5] `shouldBe` [1,3,5]
             takeWhile_foldr odd [] `shouldBe` []
+
+   describe "8. The Data.List module defines a function, groupBy, which has the \
+   \ following type: groupBy :: (a -> a -> Bool) -> [a] -> [[a]]" $ do
+      context "9. Use ghci to load the Data.List module and figure out what groupBy does," $ do
+         it "iterates a list and compares each values by the predicate and groups them if predicate is true" $ do
+            groupBy (>) [1,2,3,4,5,6] `shouldBe` [[1],[2],[3],[4],[5],[6]]
+            groupBy (<) [1,2,3,4,5,6] `shouldBe` [[1,2,3,4,5,6]]
+            groupBy (==) [1,2,2,3,3,3] `shouldBe` [[1],[2,2],[3,3,3]]
+
+      context "then write your own implementation using a fold" $ do
+         describe "composeComparables" $ do
+            it "should zip input with its tail and duplicate the last value" $ do
+               composeComparables [1,2,3] `shouldBe` [(1,2),(2,3),(3,3)]
+         describe "groupBy_fold_iter" $ do
+            it "should combine fst a tuple in snd of acc if p verifies tuple" $ do
+               groupBy_fold_iter (==) ([], []) (2,2) `shouldBe` ([],[2])
+               groupBy_fold_iter (==) ([], [2]) (2,2) `shouldBe` ([],[2,2])
+
+            it "should store snd acc in fst acc if predicate fails on tuple" $ do
+               groupBy_fold_iter (==) ([], []) (2,3) `shouldBe` ([[2]],[])
+
+         it "iterates a list and compares each values by the predicate and groups them if predicate is true" $ do
+            groupBy_fold (>) [1,2,3,4,5,6] `shouldBe` [[1],[2],[3],[4],[5],[6]]
+            groupBy_fold (<) [1,2,3,4,5,6] `shouldBe` [[1,2,3,4,5,6]]
+            groupBy_fold (==) [1,2,2,3,3,3] `shouldBe` [[1],[2,2],[3,3,3]]
+
