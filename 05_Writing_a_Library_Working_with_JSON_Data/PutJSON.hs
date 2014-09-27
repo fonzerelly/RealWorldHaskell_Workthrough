@@ -20,3 +20,5 @@ renderJValue (JArray a)      = "[" ++ values a ++ "]"
       values [] = ""
       values vs = intercalate ", " (map renderJValue vs)
 
+putJValue :: JValue -> IO ()
+putJValue v = putStrLn(renderJValue v)
